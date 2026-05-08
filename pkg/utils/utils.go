@@ -21,3 +21,8 @@ func IsFileExists(path string) bool {
 	// 存在且是文件
 	return info.Mode().IsRegular()
 }
+
+// GenerateToken 生成token
+func GenerateToken(userID string) string {
+	return userID + "123456"
+}
