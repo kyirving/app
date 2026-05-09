@@ -11,3 +11,8 @@ type User struct {
 	Balance      float64 `gorm:"column:balance"`
 	IsDeleted    int     `gorm:"column:is_deleted"`
 }
+
+// TableName 指定用户模型对应的数据表名。
+func (User) TableName() string {
+	return "user"
+}

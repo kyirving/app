@@ -28,6 +28,8 @@ func NewServer(config *config.Config, db *gorm.DB) *Server {
 func (s *Server) Start() {
 	addr := fmt.Sprintf("%s:%s", s.Config.App.Host, s.Config.App.Port)
 	// 注册路由
+
 	router.RegisterRouters(s.Web, s.Db)
+
 	s.Web.Run(addr)
 }
