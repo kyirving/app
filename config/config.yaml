@@ -1,0 +1,20 @@
+APP:
+  NAME: app
+  PORT: 8080
+  HOST: 0.0.0.0
+DB:
+  HOST: 127.0.0.1
+  PORT: 3306
+  USER: wuh
+  PASSWORD: admin888
+  DB: app
+  MAX_OPEN_CONNS: 100
+  MAX_IDLE_CONNS: 10
+  CHARSET: utf8mb4
+  COLLATE: utf8mb4_unicode_ci
+REDIS:
+  HOST: 127.0.0.1
+  PORT: 6379
+  DB: 0
+  PASSWORD: admin888
+  TIMEOUT: 5s
