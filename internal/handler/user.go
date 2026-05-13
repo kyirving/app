@@ -4,8 +4,8 @@ import (
 	"app/internal/dao"
 	"app/internal/model"
 	"app/internal/service"
+	"app/pkg/jwt"
 	"app/pkg/resp"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -52,7 +52,12 @@ func (u *UserHandler) Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, err.Error()))
 		return
 	}
-	fmt.Println("userid", user.ID)
-	c.JSON(http.StatusOK, resp.Output(resp.RESP_SUCC, user, "Register success"))
 
+	token, err := jwt.GenerateToken(user.ID, "user", "123456", "654321")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, resp.Output(resp.RESP_SUCC, token, "Register success"))
 }
