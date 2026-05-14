@@ -29,7 +29,7 @@ func (s *Server) Start() {
 	addr := fmt.Sprintf("%s:%s", s.Config.App.Host, s.Config.App.Port)
 	// 注册路由
 
-	router.RegisterRouters(s.Web, s.Db)
+	router.RegisterRouters(s.Web, s.Db, s.Config)
 
 	s.Web.Run(addr)
 }

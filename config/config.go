@@ -38,11 +38,18 @@ type AppConfig struct {
 	Host string
 }
 
+type JwtConfig struct {
+	AccessSecret     string
+	RefreshSecret    string
+	SnowflakeNodeID int64
+}
+
 type Config struct {
 	CommondArgs CommondArgs
 	DB          DbConfig
 	Redis       RedisConfig
 	App         AppConfig
+	JWT         JwtConfig
 }
 
 // LoadConfigSource 加载配置文件

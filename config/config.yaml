@@ -18,3 +18,7 @@ REDIS:
   DB: 0
   PASSWORD: admin888
   TIMEOUT: 5s
+JWT:
+  ACCESS_SECRET: your-access-secret-key
+  REFRESH_SECRET: your-refresh-secret-key
+  SNOWFLAKE_NODE_ID: 1

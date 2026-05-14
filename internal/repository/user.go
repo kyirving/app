@@ -36,3 +36,11 @@ func (u *UserRepository) Register(user model.User) (model.User, error) {
 	}
 	return user, nil
 }
+
+func (u *UserRepository) GetByUserID(userID uint64) (model.User, error) {
+	var result model.User
+	if err := u.Db.Where("user_id = ?", userID).First(&result).Error; err != nil {
+		return result, err
+	}
+	return result, nil
+}

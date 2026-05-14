@@ -1,6 +1,7 @@
 package router
 
 import (
+	"app/config"
 	"app/middleware"
 	"app/pkg/resp"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func RegisterRouters(r *gin.Engine, db *gorm.DB) {
+func RegisterRouters(r *gin.Engine, db *gorm.DB, cfg *config.Config) {
 	r.Use(middleware.ExceptionMiddleware())
 	r.NoMethod(func(c *gin.Context) {
 		c.JSON(http.StatusMethodNotAllowed, resp.Output(resp.RESP_METHOD_NOT_ALLOWED, nil, "Method Not Allowed"))
@@ -21,5 +22,5 @@ func RegisterRouters(r *gin.Engine, db *gorm.DB) {
 	})
 
 	//用户路由
-	RegisterUserRouter(r, db)
+	RegisterUserRouter(r, db, cfg.JWT)
 }

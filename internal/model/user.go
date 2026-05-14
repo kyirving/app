@@ -2,7 +2,7 @@ package model
 
 type User struct {
 	BaseModel
-	UserID       uint    `gorm:"column:user_id"`
+	UserID       uint64  `gorm:"column:user_id"`
 	Username     string  `gorm:"column:username"`
 	Password     string  `gorm:"column:password"`
 	Mobile       string  `gorm:"column:mobile"`
