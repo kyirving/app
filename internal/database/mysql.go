@@ -2,29 +2,33 @@ package database
 
 import (
 	"app/config"
+	"app/internal/model"
 	"fmt"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func ConnectMySQL(config *config.DbConfig) (*gorm.DB, error) {
+func ConnectMySQL(cfg *config.DbConfig) (*gorm.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&collation=%s&parseTime=True&loc=Local",
-		config.User, config.Password, config.Host, config.Port, config.DB, config.CharSet, config.Collate)
+		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DB, cfg.CharSet, cfg.Collate)
 
-	dnConfig := &gorm.Config{}
-	db, err := gorm.Open(mysql.Open(dsn), dnConfig)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
 
-	DB, err := db.DB()
+	sqlDB, err := db.DB()
 	if err != nil {
 		return nil, err
 	}
 
-	// 设置连接池大小
-	DB.SetMaxOpenConns(config.MaxOpenConns)
-	DB.SetMaxIdleConns(config.MaxIdleConns)
+	sqlDB.SetMaxOpenConns(cfg.MaxOpenConns)
+	sqlDB.SetMaxIdleConns(cfg.MaxIdleConns)
+
 	return db, nil
+}
+
+func AutoMigrate(db *gorm.DB) error {
+	return db.AutoMigrate(&model.User{})
 }

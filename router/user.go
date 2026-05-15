@@ -7,6 +7,7 @@ import (
 	"app/internal/service"
 	"app/middleware"
 	"fmt"
+	"time"
 
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
@@ -25,8 +26,8 @@ func RegisterUserRouter(r *gin.Engine, db *gorm.DB, jwtCfg config.JwtConfig) {
 
 	userRouter := r.Group("/user")
 	{
-		userRouter.POST("/login", userHandler.Login)
-		userRouter.POST("/register", userHandler.Register)
+		userRouter.POST("/login", middleware.RateLimitMiddleware(5, time.Second*10), userHandler.Login)
+		userRouter.POST("/register", middleware.RateLimitMiddleware(3, time.Second*10), userHandler.Register)
 
 		auth := userRouter.Group("")
 		auth.Use(middleware.AuthMiddleware(jwtCfg.AccessSecret))

@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"fmt"
-	"reflect"
+	"app/pkg/resp"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,9 +12,7 @@ func ExceptionMiddleware() gin.HandlerFunc {
 		c.Next()
 
 		if len(c.Errors) > 0 {
-			err := c.Errors.Last()
-			// 判断错误类型
-			fmt.Println(" err typeof", reflect.TypeOf(err))
+			c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, "Internal server error"))
 		}
 	}
 }

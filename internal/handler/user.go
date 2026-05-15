@@ -6,7 +6,6 @@ import (
 	"app/internal/service"
 	"app/pkg/jwt"
 	"app/pkg/resp"
-	"fmt"
 	"net/http"
 
 	"github.com/bwmarrin/snowflake"
@@ -14,9 +13,9 @@ import (
 )
 
 type UserHandler struct {
-	Svc          *service.UserService
-	Snowflake    *snowflake.Node
-	AccessSecret string
+	Svc           *service.UserService
+	Snowflake     *snowflake.Node
+	AccessSecret  string
 	RefreshSecret string
 }
 
@@ -37,10 +36,7 @@ func (u *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	user, err := u.Svc.Login(model.User{
-		Username: req.Username,
-		Password: req.Password,
-	})
+	user, err := u.Svc.Login(req.Username, req.Password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, resp.Output(resp.RESP_UNAUTHORIZED, nil, "Invalid username or password"))
 		return
@@ -48,7 +44,7 @@ func (u *UserHandler) Login(c *gin.Context) {
 
 	token, err := jwt.GenerateToken(user.UserID, "user", u.AccessSecret, u.RefreshSecret)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, err.Error()))
+		c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, "Token generation failed"))
 		return
 	}
 
@@ -78,7 +74,7 @@ func (u *UserHandler) Register(c *gin.Context) {
 	}
 	_, err := u.Svc.Register(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, err.Error()))
+		c.JSON(http.StatusInternalServerError, resp.Output(resp.RESP_FAIL, nil, "Register failed"))
 		return
 	}
 
@@ -96,7 +92,7 @@ func (u *UserHandler) GetInfo(c *gin.Context) {
 
 	user, err := u.Svc.GetByUserID(userClaims.UserID)
 	if err != nil {
-		c.JSON(http.StatusNotFound, resp.Output(resp.RESP_NOT_FOUND, nil, fmt.Sprintf("User not found: %v", err)))
+		c.JSON(http.StatusNotFound, resp.Output(resp.RESP_NOT_FOUND, nil, "User not found"))
 		return
 	}
 

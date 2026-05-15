@@ -3,13 +3,13 @@ package dao
 import "app/pkg/jwt"
 
 type Login struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Username string `json:"username" binding:"required,min=2,max=32"`
+	Password string `json:"password" binding:"required,min=6,max=128"`
 }
 
 type Register struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Username string `json:"username" binding:"required,min=2,max=32"`
+	Password string `json:"password" binding:"required,min=6,max=128"`
 }
 
 type LoginResponse struct {

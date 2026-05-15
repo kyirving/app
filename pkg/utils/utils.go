@@ -8,7 +8,6 @@ func IsDirExists(path string) bool {
 	if os.IsNotExist(err) {
 		return false
 	}
-	// 存在且是目录
 	return info.IsDir()
 }
 
@@ -18,11 +17,5 @@ func IsFileExists(path string) bool {
 	if os.IsNotExist(err) {
 		return false
 	}
-	// 存在且是文件
 	return info.Mode().IsRegular()
-}
-
-// GenerateToken 生成token
-func GenerateToken(userID string) string {
-	return userID + "123456"
 }
